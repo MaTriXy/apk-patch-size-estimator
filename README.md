@@ -1,7 +1,7 @@
 # APK patch size estimator
-Estimates the size of an  Google Play patch, the new gzipped APK and saving from using the patch.
+Estimates the size of a Google Play patch and the new gzipped APK.
 
-From two APKs it estimates the size of the new patch as well as the size of a gzipped version of the new APK, which would be used in
+From two APKs it estimates the size of the new patch as well as the size of the gzipped version of the new APK, which would be used in
 cases where the patch is unexpectedly large, unavailable, or unsuitable.
 Google Play uses multiple techniques to generate patches and generally picks the best match for the device. The best match is usually, but not always, the smallest patch file produced. The numbers that this script produces are **ESTIMATES** that can be used to characterize the impact of arbitrary changes to APKs. There is **NO GUARANTEE** that this tool produces the same patches or patch sizes that Google Play generates, stores or transmits, and the actual implementation within Google Play may change at any time, without notice.
 
