@@ -1,34 +1,42 @@
 # APK patch size estimator
-Estimates the size of a Google Play patch and the new gzipped APK.
+Estimates the size of Google Play patches and the new gzipped APK.
 
-From two APKs it estimates the size of the new patch as well as the size of the gzipped version of the new APK, which would be used in
-cases where the patch is unexpectedly large, unavailable, or unsuitable.
+From two APKs it estimates the size of the new patches as well as the size of the gzipped version of the new APK, which would be used in
+cases where the patches are unexpectedly large, unavailable, or unsuitable.
 Google Play uses multiple techniques to generate patches and generally picks the best match for the device. The best match is usually, but not always, the smallest patch file produced. The numbers that this script produces are **ESTIMATES** that can be used to characterize the impact of arbitrary changes to APKs. There is **NO GUARANTEE** that this tool produces the same patches or patch sizes that Google Play generates, stores or transmits, and the actual implementation within Google Play may change at any time, without notice.
 
 ***This is not an official Google product***
 
 ## Usage
 
-The script uses *Python 2.7.X* and *bsdiff* (*bsdiff* is the only binary used not installed by defult in a unix based OS or Cygwin)
+The script uses *Python 2.7.X*, *bsdiff* and *Java* (you may need to install them in your system)
 
-#### To estimate the patch size of two APKs run:
+For the file-by-file estimation we use a jar (at /lib/file-by-file-tools.jar) generated from: https://github.com/andrewhayden/archive-patcher
+
+#### To estimate the patches sizes of two APKs run:
 ```bash
 $ python apk_patch_size_estimator.py --old-file old.apk --new-file new.apk
 ```
 
 #### Output:
 ```bash
-Estimates:
-New APK size on Disk: 6861218 bytes [6.54MB]
-New APK Gzipped size (== Download size for new installs): 6863020 bytes [6.55MB]
-Gzipped Bsdiff Patch Size (== Download size for updates from the old APK): 2228544 bytes [2.13MB]
+New APK size on disk: 6,854,332 bytes [6.54MB]
+
+Estimated download size for new installs:
+   Full new APK (gzipped) size: 6,856,415 bytes [6.54MB]
+
+Estimated download size for updates from the old APK, using Bsdiff:
+   Bsdiff patch (gzipped) size: 2,225,220 bytes [2.12MB]
+
+Estimated download size for updates from the old APK, using File-by-File:
+   File-by-File patch (gzipped) size: 2,225,377 bytes [2.12MB]
 ```
 
-## Patch estimation process
+## Patches estimation process
 ![](images/apk_patch_size_estimator.png) 
 
 ## Installing external dependencies
-The script uses *bsdiff*, *gzip*, *head*, *tail* and *bunzip2* binaries, [**bsdiff**](https://www.freebsd.org/cgi/man.cgi?query=bsdiff) is the only one not installed by defult in a unix based OS.
+The script uses *bsdiff*, *gzip*, *head*, *tail*, *bunzip2* and *java* binaries, [**bsdiff**](https://www.freebsd.org/cgi/man.cgi?query=bsdiff) is the only one not installed by defult in a unix based OS.
 
 #### Linux debian-based
 Install bsdiff:
