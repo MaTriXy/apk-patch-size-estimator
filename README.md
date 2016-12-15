@@ -38,38 +38,7 @@ Estimated download size for updates from the old APK, using File-by-File:
 ![](images/apk_patch_size_estimator.png) 
 
 ### File-by-file estimation
-```
-File-by-File v1: Patch Generation Overview
-
-
-                      Delta-Friendly       Delta-Friendly
-   Old Archive           Old Blob             New Blob            New Archive
- ----------------    ----------------     ----------------    ----------------
- |   foo.txt    |    |   foo.txt    |     |   foo.txt    |    |   foo.txt    |
- |   version 1  |    |   version 1  |     |   version 2  |    |   version 2  |
- | (compressed) |    |(uncompressed)|     |(uncompressed)|    | (compressed) |
- |--------------|    |              |     |              |    |--------------|
- |   bar.xml    |    |              |     |              |    |   bar.xml    |
- |   version 1  |    |--------------|     |--------------|    |   version 2  |
- |(uncompressed)|--->|   bar.xml    |--┬--|   bar.xml    |<---|(uncompressed)|
- |--------------|    |   version 1  |  |  |   version 2  |    |--------------|
- |   baz.lib    |    |(uncompressed)|  |  |(uncompressed)|    |   baz.lib    |
- |   version 1  |    |--------------|  |  |--------------|    |   version 1  |
- | (compressed) |    |   baz.lib    |  |  |   baz.lib    |    | (compressed) |
- ----------------    |   version 1  |  |  |   version 1  |    ----------------
-        |            | (compressed) |  |  | (compressed) |            |
-        |            ----------------  |  ----------------            |
-        v                              v                              v
- ----------------                 ----------                  ----------------
- |Uncompression |                 | delta  |                  |Recompression |
- |   metadata   |                 ----------                  |   metadata   |
- ----------------                      |                      ----------------
-        |                              v                              |
-        |                   ----------------------                    |
-        └------------------>|  File-by-File v1   |<-------------------┘
-                            |       Patch        |
-                            ----------------------
-```
+Please visit https://github.com/andrewhayden/archive-patcher for further details.
 
 ## Installing external dependencies
 The script uses *bsdiff*, *gzip*, *head*, *tail*, *bunzip2* and *java* binaries, [**bsdiff**](https://www.freebsd.org/cgi/man.cgi?query=bsdiff) is the only one not installed by defult in a unix based OS.
