@@ -20,16 +20,17 @@ $ python apk_patch_size_estimator.py --old-file old.apk --new-file new.apk
 
 #### Output:
 ```bash
-New APK size on disk: 6,854,332 bytes [6.54MB]
+New APK size on disk: 18,271,850 bytes [17.4MB]
 
 Estimated download size for new installs:
-   Full new APK (gzipped) size: 6,856,415 bytes [6.54MB]
+   Full new APK (gzipped) size: 16,339,603 bytes [15.6MB]
 
 Estimated download size for updates from the old APK, using Bsdiff:
-   Bsdiff patch (gzipped) size: 2,225,220 bytes [2.12MB]
+   Bsdiff patch (gzipped) size: 2,989,691 bytes [2.85MB]
 
-Estimated download size for updates from the old APK, using File-by-File:
-   File-by-File patch (gzipped) size: 2,225,377 bytes [2.12MB]
+Estimated download size for updates from the old APK,
+ using File-by-File:
+   File-by-File patch (gzipped) size: 1,912,751 bytes [1.82MB]
 ```
 
 ## Patches estimation process
