@@ -21,10 +21,10 @@ import subprocess
 import unittest
 
 
-class TestCalculateSizes(unittest.TestCase):
+class TestCalculates(unittest.TestCase):
 
-  def test_calculate_sizes_success(self):
-    sizes = apk_patch_size_estimator.calculate_sizes(
+  def test_calculate_bsdiff_success(self):
+    bsdiff_size = apk_patch_size_estimator.calculate_bsdiff(
         'tests/1.zip',
         'tests/2.zip',
         'mypatch',
@@ -41,14 +41,11 @@ class TestCalculateSizes(unittest.TestCase):
         apk_patch_size_estimator.bunzip2_path, 'bunzip2')
     ## Using a delta of 10% to compensate for
     ## different bsdiff implemantations
-    self.assertAlmostEqual(
-        sizes['gzipped_new_file_size']/float(6863020), 1, delta=0.1)
-    self.assertAlmostEqual(
-        sizes['bsdiff_patch_size']/float(2228571), 1, delta=0.1)
-    self.assertTrue(os.path.isfile('mypatch.gz'))
-    os.remove('mypatch.gz')
+    self.assertAlmostEqual(bsdiff_size/float(2228571), 1, delta=0.1)
+    self.assertTrue(os.path.isfile('mypatch-bsdiff-patch.gz'))
+    os.remove('mypatch-bsdiff-patch.gz')
 
-  def test_calculate_sizes_fail(self):
+  def test_calculate_bsdiff_fail(self):
     class PopenMocked(object):
 
       def wait(self):
@@ -57,10 +54,32 @@ class TestCalculateSizes(unittest.TestCase):
     with patch.object(subprocess, 'check_output', return_value=''):
       with patch.object(subprocess, 'Popen', return_value=PopenMocked()):
         with self.assertRaises(Exception) as context:
-          apk_patch_size_estimator.calculate_sizes(
+          apk_patch_size_estimator.calculate_bsdiff(
               '', '', None, '/tmp/patch.tmp')
     self.assertEqual(context.exception.message,
                      'Problem at the bsdiff step, returned code: -1')
+
+  def test_calculate_filebyfile_success(self):
+    filebyfile_size = apk_patch_size_estimator.calculate_filebyfile(
+        'tests/1.zip',
+        'tests/2.zip',
+        'mypatch',
+        '/tmp/patch.tmp')
+    self.assertRegexpMatches(
+        apk_patch_size_estimator.gzip_path, 'gzip')
+    ## Using a delta of 0,01% to simply test
+    self.assertAlmostEqual(filebyfile_size/float(2225377), 1, delta=0.001)
+    self.assertTrue(os.path.isfile('mypatch-file-by-file-patch.gz'))
+    os.remove('mypatch-file-by-file-patch.gz')
+
+  def test_calculate_new_apk_success(self):
+    gzipped_apk_size = apk_patch_size_estimator.calculate_new_apk(
+        'tests/2.zip',
+        '/tmp/patch.tmp')
+    self.assertRegexpMatches(
+        apk_patch_size_estimator.gzip_path, 'gzip')
+    ## Using a delta of 0,01% to simply test
+    self.assertAlmostEqual(gzipped_apk_size/float(6856415), 1, delta=0.001)
 
   def test_find_binary_fail(self):
     with self.assertRaises(Exception) as context:
